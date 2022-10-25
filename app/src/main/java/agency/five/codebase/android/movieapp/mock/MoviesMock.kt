@@ -7,7 +7,7 @@ import agency.five.codebase.android.movieapp.model.MovieDetails
 
 object MoviesMock {
 
-    fun getMoviesList(): List<Movie> = listOf(
+    fun getMoviesList(i: Int): List<Movie> = listOf(
         Movie(
             id = 1,
             title = "Venom: Let There Be Carnage",
