@@ -34,12 +34,7 @@ fun MovieCategoryLabel(
     movieCategoryLabelViewState: MovieCategoryLabelViewState,
     modifier: Modifier = Modifier,
     spacing: Spacing = Spacing(),
-    onCategoryClick: (MovieCategoryLabelViewState)->Unit
 ) {
-    var isSelected by remember {
-        mutableStateOf(movieCategoryLabelViewState.isSelected)
-    }
-
     Column(modifier = modifier.width(intrinsicSize = IntrinsicSize.Max)) {
         Text(
             text = when (movieCategoryLabelViewState.categoryText) {
@@ -48,12 +43,11 @@ fun MovieCategoryLabel(
             },
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = if (isSelected) Blue else Gray600,
+            color = if (movieCategoryLabelViewState.isSelected) Blue else Gray600,
             textAlign = TextAlign.Center,
-            modifier = Modifier.clickable { onCategoryClick(movieCategoryLabelViewState) }
-
+            modifier = Modifier.clickable { }
         )
-        if (isSelected) {
+        if (movieCategoryLabelViewState.isSelected) {
             Spacer(modifier = Modifier.size(spacing.extraSmall))
             Divider(color = Blue, thickness = 4.dp, modifier = modifier.fillMaxWidth())
         }
