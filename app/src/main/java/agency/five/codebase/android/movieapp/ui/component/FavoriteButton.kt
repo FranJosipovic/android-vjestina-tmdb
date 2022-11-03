@@ -42,6 +42,7 @@ fun FavoriteButton(
                 .size(40.dp, 40.dp)
                 .padding(8.dp)
         )
+
     }
 
 }
