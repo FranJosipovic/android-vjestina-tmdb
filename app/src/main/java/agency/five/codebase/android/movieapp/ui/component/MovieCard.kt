@@ -61,6 +61,5 @@ fun MovieCardPreview() {
         imageUrl = "https://image.tmdb.org/t/p/w500/rjkmN1dniUHVYAtwuV3Tji7FsDO.jpg",
         isFavorite = false
     )
-
     MovieCard(movie)
 }

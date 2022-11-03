@@ -64,7 +64,6 @@ fun UserScoreProgressBar(
 
 
 @Composable
-
 @Preview
 fun UserScoreProgressBarPreview() {
     UserScoreProgressBar(6F)
