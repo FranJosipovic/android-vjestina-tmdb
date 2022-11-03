@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
@@ -26,10 +27,12 @@ import kotlin.math.round
 
 @Composable
 fun UserScoreProgressBar(
-    rating: Float
-){
-    Box(modifier = Modifier.wrapContentSize()) {
-        Canvas(modifier = Modifier.size(80.dp).padding(10.dp),){
+    rating: Float,
+    modifier: Modifier = Modifier
+) {
+    Box(modifier = modifier.wrapContentSize()) {
+        Canvas(modifier = Modifier
+            .size(40.dp)) {
             drawArc(
                 color = Color(152, 237, 159),
                 alpha = 0.5F,
@@ -37,31 +40,31 @@ fun UserScoreProgressBar(
                 sweepAngle = 360F,
                 useCenter = false,
                 style = Stroke(
-                    width = 6.dp.toPx(),
+                    width = 4.dp.toPx(),
                 ),
             )
             drawArc(
                 color = Color(61, 235, 75),
                 startAngle = 270F,
-                sweepAngle = ((rating/10)*360),
+                sweepAngle = ((rating / 10) * 360),
                 useCenter = false,
                 style = Stroke(
-                    width = 6.dp.toPx(),
+                    width = 4.dp.toPx(),
                 ),
             )
         }
         Text(text = rating.toString(),
             color = Color.White,
-            fontSize = 20.sp,
+            fontSize = 15.sp,
             modifier = Modifier.align(Alignment.Center)
-            )
+        )
     }
-    
+
 }
 
 
 @Composable
 @Preview
-fun UserScoreProgressBarPreview(){
+fun UserScoreProgressBarPreview() {
     UserScoreProgressBar(6F)
 }

@@ -16,15 +16,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-data class FavoriteButtonViewState (
-    var isFavorite: Boolean
+data class FavoriteButtonViewState(
+    var isFavorite: Boolean,
 )
 
 @Composable
 fun FavoriteButton(
     buttonViewState: FavoriteButtonViewState,
-    modifier: Modifier=Modifier
-){
+    modifier: Modifier = Modifier,
+) {
     var toggleIsFavorite by remember {
         mutableStateOf(buttonViewState.isFavorite)
     }
@@ -33,14 +33,14 @@ fun FavoriteButton(
         .clip(CircleShape),
         color = Blue.copy(alpha = 0.6F)
     ) {
-        Image(painter = painterResource(id = if(toggleIsFavorite) R.drawable.favorite_fill else R.drawable.fovorite_outline),
+        Image(painter = painterResource(id = if (toggleIsFavorite) R.drawable.favorite_fill else R.drawable.fovorite_outline),
             contentDescription = "favorite",
             modifier = Modifier
                 .clickable {
                     toggleIsFavorite = toggleIsFavorite.not()
                 }
-                .size(32.dp, 32.dp)
-                .padding(5.dp)
+                .size(40.dp, 40.dp)
+                .padding(8.dp)
         )
     }
 
@@ -48,6 +48,6 @@ fun FavoriteButton(
 
 @Composable
 @Preview
-fun FavoriteButtonPreview(){
+fun FavoriteButtonPreview() {
     FavoriteButton(FavoriteButtonViewState(true))
 }
