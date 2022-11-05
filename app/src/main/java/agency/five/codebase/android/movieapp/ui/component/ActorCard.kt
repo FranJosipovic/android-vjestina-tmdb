@@ -64,12 +64,10 @@ fun ActorCard(
 @Composable
 @Preview
 fun ActorCardPreview() {
-
     val actor = ActorCardViewState(
         name = "Robert Downey Jr.",
         character = "Tony Stark/Iron Man",
         imageUrl = "https://www.themoviedb.org/t/p/w200/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg"
     )
-
     ActorCard(actor)
 }

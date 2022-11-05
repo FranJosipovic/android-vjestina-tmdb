@@ -59,9 +59,7 @@ fun UserScoreProgressBar(
             modifier = Modifier.align(Alignment.Center)
         )
     }
-
 }
-
 
 @Composable
 @Preview

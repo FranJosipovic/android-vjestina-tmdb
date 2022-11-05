@@ -48,5 +48,5 @@ fun FavoriteButton(
 @Composable
 @Preview
 fun FavoriteButtonPreview() {
-    FavoriteButton(FavoriteButtonViewState(true))
+     FavoriteButton(FavoriteButtonViewState(true))
 }

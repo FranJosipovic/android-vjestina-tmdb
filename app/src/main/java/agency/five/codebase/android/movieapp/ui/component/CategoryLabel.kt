@@ -45,7 +45,7 @@ fun MovieCategoryLabel(
             fontWeight = FontWeight.Bold,
             color = if (movieCategoryLabelViewState.isSelected) Blue else Gray600,
             textAlign = TextAlign.Center,
-            modifier = Modifier.clickable { }
+            modifier = Modifier.clickable {  }
         )
         if (movieCategoryLabelViewState.isSelected) {
             Spacer(modifier = Modifier.size(spacing.extraSmall))
@@ -57,7 +57,5 @@ fun MovieCategoryLabel(
 @Composable
 @Preview
 fun MovieCategoryLabelPreview() {
-
-
     //MovieCategoryLabel(MovieCategoryLabelViewState(1, true, MovieCategoryStringResource(R.string.movies)))
 }
