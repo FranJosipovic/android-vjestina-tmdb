@@ -30,21 +30,22 @@ val favoritesMapper: FavoritesMapper = FavoritesMapperImpl()
 val favoritesViewState = favoritesMapper.toFavoritesViewState(getMoviesList())
 
 @Composable
-fun favoritesRoute(
-// actions
+fun FavoritesRoute(
+    onNavigateToMovieDetails: () -> Unit
 ) {
     val favoritesViewState by remember { mutableStateOf(favoritesViewState) }
 // ...
-    favoritesScreen(
+    FavoritesScreen(
         favoritesViewState,
-// other states and actions
+        onNavigateToMovieDetails = onNavigateToMovieDetails
     )
 }
 
 @Composable
-fun favoritesScreen(
+fun FavoritesScreen(
     favoritesViewState: FavoritesViewState,
     spacing: Spacing = Spacing(),
+    onNavigateToMovieDetails: () -> Unit
 ) {
     Column {
         Text(text = "Favorites",
@@ -62,10 +63,10 @@ fun favoritesScreen(
             items(favoritesViewState.favorites,
                 key = { item ->
                     item.id
-                }, itemContent = { item ->
-                    MovieCard(movieCardViewState = MovieCardViewState(item.imageUrl,
-                        item.isFavorite))
-                })
+                }) { item ->
+                MovieCard(movieCardViewState = MovieCardViewState(item.imageUrl,
+                    item.isFavorite), onNavigateToMovieDetails = onNavigateToMovieDetails)
+            }
         }
     }
 }
@@ -73,12 +74,13 @@ fun favoritesScreen(
 @Preview
 @Composable
 
-fun favoritesScreenPreview() {
+fun FavoritesScreenPreview() {
 
     val favoritesViewState by remember { mutableStateOf(favoritesViewState) }
     MovieAppTheme {
-        favoritesScreen(
-            favoritesViewState
+        FavoritesScreen(
+            favoritesViewState,
+            onNavigateToMovieDetails = return@MovieAppTheme
         )
     }
 }

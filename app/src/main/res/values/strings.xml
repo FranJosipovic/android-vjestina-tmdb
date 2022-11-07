@@ -8,4 +8,6 @@
     <string name="tv">TV</string>
     <string name="today">Today</string>
     <string name="this_week">This Week</string>
+    <string name="home">Home</string>
+    <string name="favorites">Favorites</string>
 </resources>

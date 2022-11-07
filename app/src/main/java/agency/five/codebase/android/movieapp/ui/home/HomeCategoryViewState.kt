@@ -1,5 +1,6 @@
 import agency.five.codebase.android.movieapp.ui.component.MovieCategoryLabelViewState
 
+
 data class HomeMovieViewState(
     val id: Int,
     val isFavorite: Boolean,

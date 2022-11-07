@@ -1,5 +1,6 @@
 package agency.five.codebase.android.movieapp.ui.movieDetails
 
+
 data class CrewmanViewState(
     val id: Int,
     val name: String,

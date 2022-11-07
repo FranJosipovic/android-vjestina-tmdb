@@ -1,7 +1,5 @@
 package agency.five.codebase.android.movieapp.ui.component
 
-import agency.five.codebase.android.movieapp.mock.MoviesMock.getMoviesList
-import agency.five.codebase.android.movieapp.model.Movie
 import agency.five.codebase.android.movieapp.ui.theme.Spacing
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -11,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
@@ -25,10 +24,13 @@ data class MovieCardViewState(
 fun MovieCard(
     movieCardViewState: MovieCardViewState,
     modifier: Modifier = Modifier,
+    height: Dp = 210.dp,
+    width: Dp = 150.dp,
     spacing: Spacing = Spacing(),
+    onNavigateToMovieDetails: () -> Unit,
 ) {
     Card(modifier = modifier
-        .size(width = 150.dp, height = 210.dp)
+        .size(width = width, height = height)
         .clip(
             shapes.small
         )) {
@@ -38,7 +40,7 @@ fun MovieCard(
             modifier = Modifier
                 .clip(shapes.small)
                 .fillMaxSize()
-                .clickable { /*TODO:open movie details*/ })
+                .clickable { onNavigateToMovieDetails() })
         ConstraintLayout {
 
             val (favoriteButton) = createRefs()
@@ -61,6 +63,5 @@ fun MovieCardPreview() {
         imageUrl = "https://image.tmdb.org/t/p/w500/rjkmN1dniUHVYAtwuV3Tji7FsDO.jpg",
         isFavorite = false
     )
-
-    MovieCard(movie)
+    MovieCard(movie, onNavigateToMovieDetails = return)
 }

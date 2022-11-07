@@ -37,19 +37,19 @@ private val movieDetailsMapper: MovieDetailsMapper = MovieDetailsMapperImpl()
 val movieDetailsViewState = movieDetailsMapper.toMovieDetailsViewState(MoviesMock.getMovieDetails())
 
 @Composable
-fun movieDetailsRoute(
+fun MovieDetailsRoute(
 // actions
 ) {
     val movieDetailsViewState by remember { mutableStateOf(movieDetailsViewState) }
 // ...
-    movieDetailsScreen(
+    MovieDetailsScreen(
         movieDetailsViewState,
 // other states and actions
     )
 }
 
 @Composable
-fun movieDetailsScreen(
+fun MovieDetailsScreen(
     movieDetailsViewState: MovieDetailsViewState,
     spacing: Spacing = Spacing(),
 ) {
@@ -69,7 +69,7 @@ fun movieDetailsScreen(
                     .constrainAs(column) {
                         bottom.linkTo(image.bottom, spacing.small)
                     }
-                    .padding(Spacing().moviedetails)
+                    .padding(Spacing().movieDetails)
                 ) {
                     Row(Modifier.padding(vertical = spacing.small),
                         verticalAlignment = Alignment.CenterVertically) {
@@ -89,7 +89,7 @@ fun movieDetailsScreen(
             }
         }
         item {
-            Column(Modifier.padding(Spacing().moviedetails)) {
+            Column(Modifier.padding(Spacing().movieDetails)) {
                 Text(
                     text = "Overview",
                     color = Blue,
@@ -101,7 +101,7 @@ fun movieDetailsScreen(
         item {
             LazyVerticalGrid(columns = GridCells.Fixed(3),
                 Modifier.height(((movieDetailsViewState.crew.size / 3) * 90).dp),
-                contentPadding = PaddingValues(Spacing().moviedetails),
+                contentPadding = PaddingValues(Spacing().movieDetails),
                 verticalArrangement = Arrangement.spacedBy(spacing.large),
                 horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
                 items(movieDetailsViewState.crew,
@@ -116,11 +116,11 @@ fun movieDetailsScreen(
         }
         item {
             Text(text = "Top Billed Cast",
-                Modifier.padding(Spacing().moviedetails),
+                Modifier.padding(Spacing().movieDetails),
                 color = Blue,
                 style = CustomHeader)
             LazyRow(
-                Modifier.padding(Spacing().moviedetails),
+                Modifier.padding(Spacing().movieDetails),
                 horizontalArrangement = Arrangement.spacedBy(spacing.medium)
             ) {
                 items(movieDetailsViewState.cast,
@@ -138,11 +138,11 @@ fun movieDetailsScreen(
 
 @Preview
 @Composable
-fun movieDetailsScreenPreview() {
+fun MovieDetailsScreenPreview() {
 
     val movieDetailsViewState by remember { mutableStateOf(movieDetailsViewState) }
     MovieAppTheme {
-        movieDetailsScreen(
+     MovieDetailsScreen(
             movieDetailsViewState
         )
     }

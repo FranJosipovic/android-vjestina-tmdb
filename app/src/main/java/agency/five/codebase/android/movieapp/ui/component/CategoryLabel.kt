@@ -34,6 +34,7 @@ fun MovieCategoryLabel(
     movieCategoryLabelViewState: MovieCategoryLabelViewState,
     modifier: Modifier = Modifier,
     spacing: Spacing = Spacing(),
+    onCategoryClick:(MovieCategoryLabelViewState)->Unit
 ) {
     Column(modifier = modifier.width(intrinsicSize = IntrinsicSize.Max)) {
         Text(
@@ -41,11 +42,11 @@ fun MovieCategoryLabel(
                 is MovieCategoryStringParam -> movieCategoryLabelViewState.categoryText.value;
                 is MovieCategoryStringResource -> stringResource(id = movieCategoryLabelViewState.categoryText.value);
             },
-            fontSize = 24.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = if (movieCategoryLabelViewState.isSelected) Blue else Gray600,
             textAlign = TextAlign.Center,
-            modifier = Modifier.clickable {  }
+            modifier = Modifier.clickable { onCategoryClick(movieCategoryLabelViewState) }
         )
         if (movieCategoryLabelViewState.isSelected) {
             Spacer(modifier = Modifier.size(spacing.extraSmall))
