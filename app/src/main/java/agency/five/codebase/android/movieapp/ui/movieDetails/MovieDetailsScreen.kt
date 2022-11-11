@@ -58,95 +58,125 @@ fun MovieDetailsScreen(
     val scrollState = rememberScrollState()
 
     Column(Modifier.verticalScroll(scrollState)) {
-        ConstraintLayout {
-            val (image, column) = createRefs()
-            AsyncImage(
-                model = movieDetailsViewState.imageUrl,
-                contentDescription = "Poster",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(400.dp)
-                    .constrainAs(image) {},
-            )
-            Column(Modifier
-                .constrainAs(column) {
-                    bottom.linkTo(image.bottom, spacing.small)
-                }
-                .padding(Spacing().movieDetails)
+        Poster(movieDetailsViewState, spacing)
+        Overview(movieDetailsViewState)
+        CrewGrid(movieDetailsViewState, spacing)
+        ActorsRow(spacing, movieDetailsViewState)
+    }
+}
+
+@Composable
+private fun ActorsRow(
+    spacing: Spacing,
+    movieDetailsViewState: MovieDetailsViewState,
+) {
+    Text(
+        text = "Top Billed Cast",
+        Modifier.padding(Spacing().movieDetails),
+        color = Blue,
+        style = CustomHeader,
+    )
+    LazyRow(
+        Modifier.padding(Spacing().movieDetails),
+        horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+    ) {
+        items(
+            movieDetailsViewState.cast,
+            key = { item ->
+                item.id
+            },
+            itemContent = { item ->
+                ActorCard(
+                    actorCardViewState = ActorCardViewState(item.name,
+                        item.character,
+                        item.imageUrl),
+                    modifier = Modifier
+                        .background(Color.White)
+                        .width(120.dp))
+            }
+        )
+    }
+}
+
+@Composable
+private fun CrewGrid(
+    movieDetailsViewState: MovieDetailsViewState,
+    spacing: Spacing,
+) {
+    LazyVerticalGrid(columns = GridCells.Fixed(3),
+        Modifier.height(((movieDetailsViewState.crew.size / 3) * 100).dp),
+        userScrollEnabled = false,
+        contentPadding = PaddingValues(Spacing().movieDetails),
+        verticalArrangement = Arrangement.spacedBy(spacing.large),
+        horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
+        items(
+            items = movieDetailsViewState.crew,
+            key = { item ->
+                item.id
+            },
+            itemContent = { item ->
+
+                CrewItem(crewItemViewState = CrewItemViewState(item.name, item.job))
+            },
+        )
+    }
+}
+
+@Composable
+private fun Overview(movieDetailsViewState: MovieDetailsViewState) {
+    Column(Modifier.padding(Spacing().movieDetails)) {
+        Text(
+            text = "Overview",
+            color = Blue,
+            style = CustomHeader
+        )
+        Text(text = movieDetailsViewState.overview, style = CustomBody)
+    }
+}
+
+@Composable
+private fun Poster(
+    movieDetailsViewState: MovieDetailsViewState,
+    spacing: Spacing,
+) {
+    ConstraintLayout {
+        val (image, column) = createRefs()
+        AsyncImage(
+            model = movieDetailsViewState.imageUrl,
+            contentDescription = "Poster",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(400.dp)
+                .constrainAs(image) {},
+        )
+        Column(Modifier
+            .constrainAs(column) {
+                bottom.linkTo(image.bottom, spacing.small)
+            }
+            .padding(Spacing().movieDetails)
+        ) {
+            Row(
+                modifier = Modifier.padding(vertical = spacing.small),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Row(
-                    modifier = Modifier.padding(vertical = spacing.small),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    UserScoreProgressBar(rating = movieDetailsViewState.voteAverage)
-                    Text(
-                        text = "user score",
-                        modifier = Modifier.padding(horizontal = spacing.small),
-                        color = Color.White,
-                    )
-                }
+                UserScoreProgressBar(rating = movieDetailsViewState.voteAverage)
                 Text(
-                    text = movieDetailsViewState.title,
-                    modifier = Modifier.padding(vertical = spacing.small),
+                    text = "user score",
+                    modifier = Modifier.padding(horizontal = spacing.small),
                     color = Color.White,
-                    style = CustomHeader,
-                )
-                Spacer(modifier = Modifier.height(spacing.small))
-                FavoriteButton(
-                    isFavorite = movieDetailsViewState.isFavorite,
-                    onClick = {}
                 )
             }
-        }
-        Column(Modifier.padding(Spacing().movieDetails)) {
             Text(
-                text = "Overview",
-                color = Blue,
-                style = CustomHeader
+                text = movieDetailsViewState.title,
+                modifier = Modifier.padding(vertical = spacing.small),
+                color = Color.White,
+                style = CustomHeader,
             )
-            Text(text = movieDetailsViewState.overview, style = CustomBody)
-        }
-        LazyVerticalGrid(columns = GridCells.Fixed(3),
-            Modifier.height(((movieDetailsViewState.crew.size / 3) * 90).dp),
-            contentPadding = PaddingValues(Spacing().movieDetails),
-            verticalArrangement = Arrangement.spacedBy(spacing.large),
-            horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
-            items(
-                items = movieDetailsViewState.crew,
-                key = { item ->
-                    item.id
-                },
-                itemContent = { item ->
-
-                    CrewItem(crewItemViewState = CrewItemViewState(item.name, item.job))
-                },
-            )
-        }
-        Text(
-            text = "Top Billed Cast",
-            Modifier.padding(Spacing().movieDetails),
-            color = Blue,
-            style = CustomHeader,
-        )
-        LazyRow(
-            Modifier.padding(Spacing().movieDetails),
-            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
-        ) {
-            items(
-                movieDetailsViewState.cast,
-                key = { item ->
-                    item.id
-                },
-                itemContent = { item ->
-                    ActorCard(
-                        actorCardViewState = ActorCardViewState(item.name,
-                            item.character,
-                            item.imageUrl),
-                        modifier = Modifier
-                            .background(Color.White)
-                            .width(120.dp))
-                }
+            Spacer(modifier = Modifier.height(spacing.small))
+            FavoriteButton(
+                isFavorite = movieDetailsViewState.isFavorite,
+                onClick = {}
             )
         }
     }

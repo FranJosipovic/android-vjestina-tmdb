@@ -162,11 +162,11 @@ private fun BottomNavigationBar(
     ) {
         destinations.forEach { destination ->
             BottomNavigationItem(
-                selected = (destination.route == currentDestination?.route.toString()),
+                selected = (destination.route == currentDestination?.route),
                 onClick = { onNavigateToDestination(destination) },
                 icon = {
                     Icon(
-                        painter = if (destination.route == currentDestination?.route.toString()) {
+                        painter = if (destination.route == currentDestination?.route) {
                             painterResource(id = destination.selectedIconId)
                         } else {
                             painterResource(id = destination.unselectedIconId)
