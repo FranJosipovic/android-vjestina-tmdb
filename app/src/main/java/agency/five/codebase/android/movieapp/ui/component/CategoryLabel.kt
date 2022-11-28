@@ -32,7 +32,7 @@ data class MovieCategoryLabelViewState(
 @Composable
 fun MovieCategoryLabel(
     movieCategoryLabelViewState: MovieCategoryLabelViewState,
-    onCategoryClick: (MovieCategoryLabelViewState) -> Unit,
+    onCategoryClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     spacing: Spacing = Spacing(),
 ) {
@@ -46,7 +46,7 @@ fun MovieCategoryLabel(
             fontWeight = FontWeight.Bold,
             color = if (movieCategoryLabelViewState.isSelected) Blue else Gray600,
             textAlign = TextAlign.Center,
-            modifier = Modifier.clickable { onCategoryClick(movieCategoryLabelViewState) }
+            modifier = Modifier.clickable { onCategoryClick(movieCategoryLabelViewState.itemId) }
         )
         if (movieCategoryLabelViewState.isSelected) {
             Spacer(modifier = Modifier.size(spacing.extraSmall))

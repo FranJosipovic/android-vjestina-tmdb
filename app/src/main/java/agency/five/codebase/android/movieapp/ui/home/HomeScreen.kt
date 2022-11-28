@@ -26,58 +26,26 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
-private val homeScreenMapper: HomeScreenMapper = HomeScreenMapperImpl()
-
-val popularCategoryViewState =
-    homeScreenMapper.toHomeMovieCategoryViewState(listOf(MovieCategory.POPULAR_STREAMING,
-        MovieCategory.POPULAR_ONTV,
-        MovieCategory.POPULAR_FORRENT,
-        MovieCategory.POPULAR_INTHEATRES), MovieCategory.POPULAR_STREAMING, getMoviesList())
-val nowPlayingCategoryViewState =
-    homeScreenMapper.toHomeMovieCategoryViewState(listOf(MovieCategory.NOWPLAYING_TV,
-        MovieCategory.NOWPLAYING_MOVIES), MovieCategory.NOWPLAYING_TV, getMoviesList())
-val upcomingCategoryViewState =
-    homeScreenMapper.toHomeMovieCategoryViewState(listOf(MovieCategory.UPCOMING_TODAY,
-        MovieCategory.UPCOMING_THISWEEK), MovieCategory.UPCOMING_TODAY, getMoviesList())
+import androidx.lifecycle.ViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun HomeScreenRoute(
+    viewModel: HomeViewModel,
     onNavigateToMovieDetails: (HomeMovieViewState) -> Unit,
 ) {
-    var popularMovies by remember { mutableStateOf(popularCategoryViewState) }
-    var nowPlayingMovies by remember { mutableStateOf(nowPlayingCategoryViewState) }
-    var upcomingMovies by remember { mutableStateOf(upcomingCategoryViewState) }
+
+    val popularMovies: HomeMovieCategoryViewState by viewModel.popularMovies.collectAsState()
+    val nowPlayingMovies: HomeMovieCategoryViewState by viewModel.nowPlayingMovies.collectAsState()
+    val upcomingMovies: HomeMovieCategoryViewState by viewModel.upcomingMovies.collectAsState()
 
     HomeScreen(
         popularMovies,
         nowPlayingMovies,
         upcomingMovies,
         onNavigateToMovieDetails = onNavigateToMovieDetails,
-        onCategoryClick = {
-            when (it.itemId) {
-                0, 1, 2, 3 -> popularMovies =
-                    homeScreenMapper.toHomeMovieCategoryViewState(listOf(
-                        MovieCategory.POPULAR_STREAMING,
-                        MovieCategory.POPULAR_ONTV,
-                        MovieCategory.POPULAR_FORRENT,
-                        MovieCategory.POPULAR_INTHEATRES),
-                        MovieCategory.values()[it.itemId],
-                        getMoviesList())
-                4, 5 -> nowPlayingMovies =
-                    homeScreenMapper.toHomeMovieCategoryViewState(listOf(
-                        MovieCategory.NOWPLAYING_TV,
-                        MovieCategory.NOWPLAYING_MOVIES),
-                        MovieCategory.values()[it.itemId],
-                        getMoviesList())
-                else -> upcomingMovies =
-                    homeScreenMapper.toHomeMovieCategoryViewState(listOf(
-                        MovieCategory.UPCOMING_TODAY,
-                        MovieCategory.UPCOMING_THISWEEK),
-                        MovieCategory.values()[it.itemId],
-                        getMoviesList())
-            }
-        }
+        onCategoryClick = { categoryId -> viewModel.changeCategory(categoryId) },
+        onFavoriteClick = { movieId -> viewModel.toggleFavorite(movieId) }
     )
 }
 
@@ -87,7 +55,8 @@ fun HomeScreen(
     nowPlayingMovies: HomeMovieCategoryViewState,
     upcomingMovies: HomeMovieCategoryViewState,
     onNavigateToMovieDetails: (HomeMovieViewState) -> Unit,
-    onCategoryClick: (MovieCategoryLabelViewState) -> Unit,
+    onCategoryClick: (categoryId: Int) -> Unit,
+    onFavoriteClick: (movieId: Int) -> Unit,
     spacing: Spacing = Spacing(),
 ) {
     val scrollState = rememberScrollState()
@@ -101,6 +70,7 @@ fun HomeScreen(
         HomeHeaderCategoriesMovies(
             onCategoryClick = onCategoryClick,
             onNavigateToMovieDetails = onNavigateToMovieDetails,
+            onFavoriteClick = onFavoriteClick,
             spacing = spacing,
             movieCategoryType = popularMovies,
             headerTitle = "What's popular"
@@ -109,6 +79,7 @@ fun HomeScreen(
         HomeHeaderCategoriesMovies(
             onCategoryClick = onCategoryClick,
             onNavigateToMovieDetails = onNavigateToMovieDetails,
+            onFavoriteClick = onFavoriteClick,
             spacing = spacing,
             movieCategoryType = nowPlayingMovies,
             headerTitle = "Now playing"
@@ -117,6 +88,7 @@ fun HomeScreen(
         HomeHeaderCategoriesMovies(
             onCategoryClick = onCategoryClick,
             onNavigateToMovieDetails = onNavigateToMovieDetails,
+            onFavoriteClick = onFavoriteClick,
             spacing = spacing,
             movieCategoryType = upcomingMovies,
             headerTitle = "Upcoming"
@@ -126,8 +98,9 @@ fun HomeScreen(
 
 @Composable
 private fun HomeHeaderCategoriesMovies(
-    onCategoryClick: (MovieCategoryLabelViewState) -> Unit,
+    onCategoryClick: (Int) -> Unit,
     onNavigateToMovieDetails: (HomeMovieViewState) -> Unit,
+    onFavoriteClick: (movieId: Int) -> Unit,
     spacing: Spacing,
     movieCategoryType: HomeMovieCategoryViewState,
     headerTitle: String,
@@ -141,6 +114,7 @@ private fun HomeHeaderCategoriesMovies(
     )
 
     HomeScreenMovieList(
+        onFavoriteClick = onFavoriteClick,
         movies = movieCategoryType,
         onNavigateToMovieDetails = onNavigateToMovieDetails,
         spacing = spacing,
@@ -150,6 +124,7 @@ private fun HomeHeaderCategoriesMovies(
 @Composable
 private fun HomeScreenMovieList(
     movies: HomeMovieCategoryViewState,
+    onFavoriteClick: (movieId: Int) -> Unit,
     onNavigateToMovieDetails: (HomeMovieViewState) -> Unit,
     spacing: Spacing,
 ) {
@@ -159,6 +134,7 @@ private fun HomeScreenMovieList(
             itemContent = { item ->
                 MovieCard(
                     movieCardViewState = MovieCardViewState(
+                        id = item.id,
                         imageUrl = item.imageUrl,
                         isFavorite = item.isFavorite,
                     ),
@@ -166,7 +142,7 @@ private fun HomeScreenMovieList(
                         .height(200.dp)
                         .width(120.dp),
                     onCardClick = { onNavigateToMovieDetails(item) },
-                    onFavoriteClick = {}
+                    onFavoriteClick = onFavoriteClick
                 )
             },
         )
@@ -176,7 +152,7 @@ private fun HomeScreenMovieList(
 @Composable
 private fun HomeScreenCategoriesList(
     categoryTypeMovies: HomeMovieCategoryViewState,
-    onCategoryClick: (MovieCategoryLabelViewState) -> Unit,
+    onCategoryClick: (Int) -> Unit,
     spacing: Spacing,
 ) {
     LazyRow(
@@ -207,5 +183,6 @@ private fun HomeScreenHeader(spacing: Spacing, text: String) {
 @Preview
 @Composable
 fun HomeScreenScreenPreview() {
-    HomeScreenRoute(onNavigateToMovieDetails = { return@HomeScreenRoute })
+    HomeScreenRoute(viewModel = getViewModel(),
+        onNavigateToMovieDetails = { return@HomeScreenRoute })
 }
