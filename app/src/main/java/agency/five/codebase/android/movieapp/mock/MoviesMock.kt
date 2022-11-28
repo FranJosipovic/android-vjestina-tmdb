@@ -53,7 +53,7 @@ object MoviesMock {
             imageUrl = "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
             isFavorite = false,
         ),
-        voteAverage = 0.81f,
+        voteAverage = 8.1f,
         releaseDate = "17/12/2021",
         language = "US",
         runtime = 148,

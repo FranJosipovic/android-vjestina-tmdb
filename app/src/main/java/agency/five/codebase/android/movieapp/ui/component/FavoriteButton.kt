@@ -28,14 +28,15 @@ fun FavoriteButton(
             .clip(CircleShape),
         color = Blue.copy(alpha = 0.5F)
     ) {
-        Image(painter = painterResource(id = if (isFavorite) R.drawable.favorite_fill else R.drawable.favorite_outline),
+        Image(
+            painter = painterResource(id = if (isFavorite) R.drawable.favorite_fill else R.drawable.favorite_outline),
             contentDescription = "favorite",
             modifier = Modifier
                 .clickable {
                     onClick()
                 }
                 .size(40.dp, 40.dp)
-                .padding(8.dp)
+                .padding(8.dp),
         )
     }
 }
