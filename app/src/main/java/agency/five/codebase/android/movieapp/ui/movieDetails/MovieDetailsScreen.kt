@@ -5,11 +5,8 @@ import agency.five.codebase.android.movieapp.ui.component.*
 import agency.five.codebase.android.movieapp.ui.movieDetails.mapper.MovieDetailsMapper
 import agency.five.codebase.android.movieapp.ui.movieDetails.mapper.MovieDetailsMapperImpl
 import agency.five.codebase.android.movieapp.ui.theme.*
-import android.widget.GridView
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -26,11 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import androidx.constraintlayout.compose.ConstraintLayout as ConstraintLayout
 
@@ -39,9 +33,7 @@ private val movieDetailsMapper: MovieDetailsMapper = MovieDetailsMapperImpl()
 val movieDetailsViewState = movieDetailsMapper.toMovieDetailsViewState(MoviesMock.getMovieDetails())
 
 @Composable
-fun MovieDetailsRoute(
-
-) {
+fun MovieDetailsRoute() {
     val movieDetailsViewState by remember { mutableStateOf(movieDetailsViewState) }
 
     MovieDetailsScreen(
@@ -73,7 +65,7 @@ fun MovieDetailsScreen(
                 .constrainAs(column) {
                     bottom.linkTo(image.bottom, spacing.small)
                 }
-                .padding(Spacing().movieDetails)
+                .padding(Spacing().normal)
             ) {
                 Row(
                     modifier = Modifier.padding(vertical = spacing.small),
@@ -99,7 +91,7 @@ fun MovieDetailsScreen(
                 )
             }
         }
-        Column(Modifier.padding(Spacing().movieDetails)) {
+        Column(Modifier.padding(Spacing().normal)) {
             Text(
                 text = "Overview",
                 color = Blue,
@@ -107,29 +99,36 @@ fun MovieDetailsScreen(
             )
             Text(text = movieDetailsViewState.overview, style = CustomBody)
         }
-        LazyVerticalGrid(columns = GridCells.Fixed(3),
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
             Modifier.height(((movieDetailsViewState.crew.size / 3) * 90).dp),
-            contentPadding = PaddingValues(Spacing().movieDetails),
+            contentPadding = PaddingValues(Spacing().normal),
             verticalArrangement = Arrangement.spacedBy(spacing.large),
-            horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
+            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+        ) {
             items(
                 items = movieDetailsViewState.crew,
                 key = { item ->
                     item.id
                 },
                 itemContent = { item ->
-                    CrewItem(crewItemViewState = CrewItemViewState(name = item.name, job = item.job))
+                    CrewItem(
+                        crewItemViewState = CrewItemViewState(
+                            name = item.name,
+                            job = item.job
+                        )
+                    )
                 },
             )
         }
         Text(
             text = "Top Billed Cast",
-            modifier = Modifier.padding(Spacing().movieDetails),
+            modifier = Modifier.padding(Spacing().normal),
             color = Blue,
             style = CustomHeader,
         )
         LazyRow(
-            modifier = Modifier.padding(Spacing().movieDetails),
+            modifier = Modifier.padding(Spacing().normal),
             horizontalArrangement = Arrangement.spacedBy(spacing.medium)
         ) {
             items(
@@ -139,12 +138,15 @@ fun MovieDetailsScreen(
                 },
                 itemContent = { item ->
                     ActorCard(
-                        actorCardViewState = ActorCardViewState(item.name,
+                        actorCardViewState = ActorCardViewState(
+                            item.name,
                             item.character,
-                            item.imageUrl),
+                            item.imageUrl
+                        ),
                         modifier = Modifier
                             .background(Color.White)
-                            .width(120.dp))
+                            .width(120.dp)
+                    )
                 }
             )
         }
