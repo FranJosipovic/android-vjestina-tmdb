@@ -16,6 +16,8 @@ import agency.five.codebase.android.movieapp.ui.theme.Spacing
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import agency.five.codebase.android.movieapp.ui.theme.Spacing
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -39,6 +41,13 @@ fun HomeScreenRoute(
     val nowPlayingMovies: HomeMovieCategoryViewState by viewModel.nowPlayingMovies.collectAsState()
     val upcomingMovies: HomeMovieCategoryViewState by viewModel.upcomingMovies.collectAsState()
 
+@Composable
+fun HomeScreenRoute(
+    onNavigateToMovieDetails: (HomeMovieViewState) -> Unit,
+) {
+    var popularMovies by remember { mutableStateOf(popularCategoryViewState) }
+    var nowPlayingMovies by remember { mutableStateOf(nowPlayingCategoryViewState) }
+    var upcomingMovies by remember { mutableStateOf(upcomingCategoryViewState) }
     HomeScreen(
         popularMovies,
         nowPlayingMovies,
@@ -64,7 +73,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
-            .padding(spacing.homeScreen),
+            .padding(spacing.normal),
     ) {
 
         HomeHeaderCategoriesMovies(

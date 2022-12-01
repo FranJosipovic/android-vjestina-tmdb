@@ -177,6 +177,7 @@ private fun BottomNavigationBar(
                 icon = {
                     Icon(
                         painter = if (destination.route == currentDestination?.route) {
+
                             painterResource(id = destination.selectedIconId)
                         } else {
                             painterResource(id = destination.unselectedIconId)

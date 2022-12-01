@@ -2,14 +2,16 @@ package agency.five.codebase.android.movieapp.ui.favorites
 
 import agency.five.codebase.android.movieapp.ui.component.MovieCard
 import agency.five.codebase.android.movieapp.ui.component.MovieCardViewState
+import FavoritesMapper
+import agency.five.codebase.android.movieapp.mock.MoviesMock
+import agency.five.codebase.android.movieapp.mock.MoviesMock.getMoviesList
+import agency.five.codebase.android.movieapp.ui.component.MovieCard
+import agency.five.codebase.android.movieapp.ui.component.MovieCardViewState
+import agency.five.codebase.android.movieapp.ui.favorites.mapper.FavoritesMapperImpl
 import agency.five.codebase.android.movieapp.ui.theme.Blue
 import agency.five.codebase.android.movieapp.ui.theme.CustomHeader
 import agency.five.codebase.android.movieapp.ui.theme.MovieAppTheme
 import agency.five.codebase.android.movieapp.ui.theme.Spacing
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,15 +32,7 @@ fun FavoritesRoute(
         onFavoriteClick = { movieId: Int -> viewModel.removeMovieFromFavorites(movieId) },
         onNavigateToMovieDetails = onNavigateToMovieDetails,
     )
-}
-
-@Composable
-fun FavoritesScreen(
-    favoritesViewState: FavoritesViewState,
-    spacing: Spacing = Spacing(),
-    onFavoriteClick: (movieId: Int) -> Unit,
-    onNavigateToMovieDetails: (FavoritesMovieViewState) -> Unit,
-) {
+)  {
     Column {
         Text(
             text = if (favoritesViewState.favorites.isEmpty()) {

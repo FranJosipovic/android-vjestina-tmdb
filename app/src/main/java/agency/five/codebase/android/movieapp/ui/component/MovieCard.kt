@@ -39,7 +39,6 @@ fun MovieCard(
                     .clip(shapes.small)
                     .fillMaxSize()
                     .clickable { onCardClick() })
-
             FavoriteButton(
                 isFavorite = movieCardViewState.isFavorite,
                 onClick = { onFavoriteClick(movieCardViewState.id) },
