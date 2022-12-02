@@ -26,7 +26,7 @@ class HomeViewModel(
         popularMoviesCategorySelected
             .flatMapLatest { selectedMovieCategory ->
                 movieRepository
-                    .popularMovies(movieCategory = selectedMovieCategory)
+                    .movies(movieCategory = selectedMovieCategory)
                     .map { movies ->
                         homeScreenMapper.toHomeMovieCategoryViewState(
                             movieCategories = listOf(
@@ -45,22 +45,22 @@ class HomeViewModel(
                 initialValue = HomeMovieCategoryViewState(emptyList(), emptyList())
             )
 
-
     @OptIn(ExperimentalCoroutinesApi::class)
     val nowPlayingMovies: StateFlow<HomeMovieCategoryViewState> =
-        nowPlayingMoviesCategorySelected.flatMapLatest { selectedMovieCategory ->
-            movieRepository.popularMovies(movieCategory = selectedMovieCategory)
-                .map { movies ->
-                    homeScreenMapper.toHomeMovieCategoryViewState(
-                        movieCategories = listOf(
-                            MovieCategory.NOW_PLAYING_TV,
-                            MovieCategory.NOW_PLAYING_MOVIES,
-                        ),
-                        selectedMovieCategory = selectedMovieCategory,
-                        movies = movies,
-                    )
-                }
-        }
+        nowPlayingMoviesCategorySelected
+            .flatMapLatest { selectedMovieCategory ->
+                movieRepository.movies(movieCategory = selectedMovieCategory)
+                    .map { movies ->
+                        homeScreenMapper.toHomeMovieCategoryViewState(
+                            movieCategories = listOf(
+                                MovieCategory.NOW_PLAYING_TV,
+                                MovieCategory.NOW_PLAYING_MOVIES,
+                            ),
+                            selectedMovieCategory = selectedMovieCategory,
+                            movies = movies,
+                        )
+                    }
+            }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
@@ -69,19 +69,20 @@ class HomeViewModel(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val upcomingMovies: StateFlow<HomeMovieCategoryViewState> =
-        upcomingMoviesCategorySelected.flatMapLatest { selectedMovieCategory ->
-            movieRepository.popularMovies(movieCategory = selectedMovieCategory)
-                .map { movies ->
-                    homeScreenMapper.toHomeMovieCategoryViewState(
-                        movieCategories = listOf(
-                            MovieCategory.UPCOMING_TODAY,
-                            MovieCategory.UPCOMING_THIS_WEEK,
-                        ),
-                        selectedMovieCategory = selectedMovieCategory,
-                        movies = movies,
-                    )
-                }
-        }
+        upcomingMoviesCategorySelected
+            .flatMapLatest { selectedMovieCategory ->
+                movieRepository.movies(movieCategory = selectedMovieCategory)
+                    .map { movies ->
+                        homeScreenMapper.toHomeMovieCategoryViewState(
+                            movieCategories = listOf(
+                                MovieCategory.UPCOMING_TODAY,
+                                MovieCategory.UPCOMING_THIS_WEEK,
+                            ),
+                            selectedMovieCategory = selectedMovieCategory,
+                            movies = movies,
+                        )
+                    }
+            }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),

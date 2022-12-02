@@ -32,13 +32,15 @@ fun MovieCard(
             )
     ) {
         Box() {
-            AsyncImage(model = movieCardViewState.imageUrl,
+            AsyncImage(
+                model = movieCardViewState.imageUrl,
                 contentDescription = "movie poster",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .clip(shapes.small)
                     .fillMaxSize()
-                    .clickable { onCardClick() })
+                    .clickable { onCardClick() }
+            )
 
             FavoriteButton(
                 isFavorite = movieCardViewState.isFavorite,

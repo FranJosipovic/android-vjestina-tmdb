@@ -26,7 +26,7 @@ class DetailsScreenViewModel(
                 initialValue = MovieDetailsViewState(
                     id = 1,
                     imageUrl = "",
-                    voteAverage = 0F,
+                    voteAverage = 0.0,
                     title = "",
                     overview = "",
                     isFavorite = false,

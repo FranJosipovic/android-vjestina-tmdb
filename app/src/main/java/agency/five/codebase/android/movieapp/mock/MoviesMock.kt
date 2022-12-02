@@ -53,7 +53,7 @@ object MoviesMock {
             imageUrl = "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
             isFavorite = false,
         ),
-        voteAverage = 8.1f,
+        voteAverage = 8.1,
         releaseDate = "17/12/2021",
         language = "US",
         runtime = 148,
@@ -72,30 +72,5 @@ object MoviesMock {
                 imageUrl = "https://image.tmdb.org/t/p/w200/bBRlrpJm9XkNSg0YT5LCaxqoFMX.jpg"
             )
         },
-    )
-
-    val fakeMovies = getMoviesList().toMutableList()
-
-    fun getMovieDetailsById(movieId: Int): MovieDetails = MovieDetails(
-        movie = fakeMovies.first { it.id == movieId },
-        voteAverage = getMovieDetails().voteAverage,
-        releaseDate = getMovieDetails().releaseDate,
-        language = getMovieDetails().language,
-        runtime = getMovieDetails().runtime,
-        crew = getMovieDetails().crew,
-        cast = getMovieDetails().cast
-    )
-
-    fun getCrewman(): Crewman = Crewman(
-        id = 1,
-        name = "Jon Favreau",
-        job = "Director"
-    )
-
-    fun getActor(): Actor = Actor(
-        id = 1,
-        name = "Robert Downey Jr.",
-        character = "Tony Stark/Iron Man",
-        imageUrl = "https://www.themoviedb.org/t/p/w200/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg"
     )
 }

@@ -2,6 +2,7 @@ package agency.five.codebase.android.movieapp.ui.favorites
 
 import agency.five.codebase.android.movieapp.ui.component.MovieCard
 import agency.five.codebase.android.movieapp.ui.component.MovieCardViewState
+import agency.five.codebase.android.movieapp.ui.favorites.mapper.FavoritesViewModel
 import agency.five.codebase.android.movieapp.ui.theme.Blue
 import agency.five.codebase.android.movieapp.ui.theme.CustomHeader
 import agency.five.codebase.android.movieapp.ui.theme.MovieAppTheme
@@ -41,7 +42,11 @@ fun FavoritesScreen(
 ) {
     Column {
         Text(
-            text = "Favorites",
+            text = if (favoritesViewState.favorites.isEmpty()) {
+                "Your favorites list is empty"
+            } else {
+                "Favorites"
+            },
             modifier = Modifier.padding(spacing.medium),
             color = Blue,
             style = CustomHeader

@@ -1,7 +1,7 @@
-package agency.five.codebase.android.movieapp.ui.favorites
+package agency.five.codebase.android.movieapp.ui.favorites.mapper
 
 import agency.five.codebase.android.movieapp.data.MovieRepository
-import agency.five.codebase.android.movieapp.ui.favorites.mapper.FavoritesMapper
+import agency.five.codebase.android.movieapp.ui.favorites.FavoritesViewState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
