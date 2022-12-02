@@ -1,4 +1,4 @@
-package agency.five.codebase.android.movieapp.ui.favorites
+package agency.five.codebase.android.movieapp.ui.movieDetails
 
 import agency.five.codebase.android.movieapp.data.MovieRepository
 import agency.five.codebase.android.movieapp.ui.movieDetails.MovieDetailsViewState

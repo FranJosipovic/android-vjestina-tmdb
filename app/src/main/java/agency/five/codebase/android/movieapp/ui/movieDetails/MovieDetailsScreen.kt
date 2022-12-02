@@ -1,7 +1,6 @@
 package agency.five.codebase.android.movieapp.ui.movieDetails
 
 import agency.five.codebase.android.movieapp.ui.component.*
-import agency.five.codebase.android.movieapp.ui.favorites.DetailsScreenViewModel
 import agency.five.codebase.android.movieapp.ui.theme.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -35,11 +34,8 @@ fun MovieDetailsRoute(
         onFavoriteClick = { movieId: Int ->
             viewModel.toggleFavorite(movieId)
         }
-
-private val movieDetailsMapper: MovieDetailsMapper = MovieDetailsMapperImpl()
-
-val movieDetailsViewState = movieDetailsMapper.toMovieDetailsViewState(MoviesMock.getMovieDetails())
-
+    )
+}
 
 @Composable
 fun MovieDetailsScreen(
@@ -49,105 +45,135 @@ fun MovieDetailsScreen(
 ) {
 
     val scrollState = rememberScrollState()
-    Column(Modifier.verticalScroll(scrollState)) {
-        ConstraintLayout {
-            val (image, column) = createRefs()
-            AsyncImage(
-                model = movieDetailsViewState.imageUrl,
-                contentDescription = "Poster",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(400.dp)
-                    .constrainAs(image) {},
-            )
-            Column(Modifier
+
+    Column(modifier = Modifier.verticalScroll(scrollState)) {
+        Poster(
+            movieDetailsViewState = movieDetailsViewState,
+            onFavoriteClick = onFavoriteClick,
+            spacing = spacing,
+        )
+        Overview(movieDetailsViewState = movieDetailsViewState)
+        CrewGrid(movieDetailsViewState = movieDetailsViewState, spacing = spacing)
+        ActorsRow(spacing = spacing, movieDetailsViewState = movieDetailsViewState)
+    }
+}
+
+@Composable
+private fun ActorsRow(
+    spacing: Spacing,
+    movieDetailsViewState: MovieDetailsViewState,
+) {
+    Text(
+        text = "Top Billed Cast",
+        modifier = Modifier.padding(Spacing().normal),
+        color = Blue,
+        style = CustomHeader,
+    )
+    LazyRow(
+        modifier = Modifier.padding(Spacing().normal),
+        horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+    ) {
+        items(
+            items = movieDetailsViewState.cast,
+            key = { item ->
+                item.id
+            },
+            itemContent = { item ->
+                ActorCard(
+                    actorCardViewState = ActorCardViewState(item.name,
+                        item.character,
+                        item.imageUrl),
+                    modifier = Modifier
+                        .background(Color.White)
+                        .width(120.dp))
+            }
+        )
+    }
+}
+
+@Composable
+private fun CrewGrid(
+    movieDetailsViewState: MovieDetailsViewState,
+    spacing: Spacing,
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        modifier = Modifier.height(((movieDetailsViewState.crew.size / 3) * 100).dp),
+        userScrollEnabled = false,
+        contentPadding = PaddingValues(Spacing().normal),
+        verticalArrangement = Arrangement.spacedBy(spacing.large),
+        horizontalArrangement = Arrangement.spacedBy(spacing.medium),
+    ) {
+        items(
+            items = movieDetailsViewState.crew,
+            key = { item ->
+                item.id
+            },
+            itemContent = { item ->
+
+                CrewItem(crewItemViewState = CrewItemViewState(item.name, item.job))
+            },
+        )
+    }
+}
+
+@Composable
+private fun Overview(movieDetailsViewState: MovieDetailsViewState) {
+    Column(modifier = Modifier.padding(Spacing().normal)) {
+        Text(
+            text = "Overview",
+            color = Blue,
+            style = CustomHeader
+        )
+        Text(text = movieDetailsViewState.overview, style = CustomBody)
+    }
+}
+
+@Composable
+private fun Poster(
+    movieDetailsViewState: MovieDetailsViewState,
+    onFavoriteClick: (Int) -> Unit,
+    spacing: Spacing,
+) {
+    ConstraintLayout {
+        val (image, column) = createRefs()
+        AsyncImage(
+            model = movieDetailsViewState.imageUrl,
+            contentDescription = "Poster",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(400.dp)
+                .constrainAs(image) {},
+        )
+        Column(
+            modifier = Modifier
                 .constrainAs(column) {
                     bottom.linkTo(image.bottom, spacing.small)
                 }
-                .padding(Spacing().normal)
+                .padding(Spacing().normal),
+        ) {
+            Row(
+                modifier = Modifier.padding(vertical = spacing.small),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Row(
-                    modifier = Modifier.padding(vertical = spacing.small),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    UserScoreProgressBar(rating = movieDetailsViewState.voteAverage)
-                    Text(
-                        text = "user score",
-                        modifier = Modifier.padding(horizontal = spacing.small),
-                        color = Color.White,
-                    )
-                }
+                UserScoreProgressBar(rating = movieDetailsViewState.voteAverage)
                 Text(
-                    text = movieDetailsViewState.title,
-                    modifier = Modifier.padding(vertical = spacing.small),
+                    text = "user score",
+                    modifier = Modifier.padding(horizontal = spacing.small),
                     color = Color.White,
-                    style = CustomHeader,
-                )
-                Spacer(modifier = Modifier.height(spacing.small))
-                FavoriteButton(
-                    isFavorite = movieDetailsViewState.isFavorite,
-                    onClick = {}
                 )
             }
-        }
-        Column(Modifier.padding(Spacing().normal)) {
             Text(
-                text = "Overview",
-                color = Blue,
-                style = CustomHeader
+                text = movieDetailsViewState.title,
+                modifier = Modifier.padding(vertical = spacing.small),
+                color = Color.White,
+                style = CustomHeader,
             )
-            Text(text = movieDetailsViewState.overview, style = CustomBody)
-        }
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            Modifier.height(((movieDetailsViewState.crew.size / 3) * 90).dp),
-            contentPadding = PaddingValues(Spacing().normal),
-            verticalArrangement = Arrangement.spacedBy(spacing.large),
-            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
-        ) {
-            items(
-                items = movieDetailsViewState.crew,
-                key = { item ->
-                    item.id
-                },
-                itemContent = { item ->
-                    CrewItem(
-                        crewItemViewState = CrewItemViewState(
-                            name = item.name,
-                            job = item.job
-                        )
-                    )
-                },
-            )
-        }
-        Text(
-            text = "Top Billed Cast",
-            modifier = Modifier.padding(Spacing().normal),
-            color = Blue,
-            style = CustomHeader,
-        )
-        LazyRow(
-            modifier = Modifier.padding(Spacing().normal),
-            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
-        ) {
-            items(
-                items = movieDetailsViewState.cast,
-                key = { item ->
-                    item.id
-                },
-                itemContent = { item ->
-                    ActorCard(
-                        actorCardViewState = ActorCardViewState(
-                            item.name,
-                            item.character,
-                            item.imageUrl
-                        ),
-                        modifier = Modifier
-                            .background(Color.White)
-                            .width(120.dp)
-                    )
-                }
+            Spacer(modifier = Modifier.height(spacing.small))
+            FavoriteButton(
+                isFavorite = movieDetailsViewState.isFavorite,
+                onClick = { onFavoriteClick(movieDetailsViewState.id) }
             )
         }
     }
@@ -159,7 +185,6 @@ fun MovieDetailsScreenPreview() {
     MovieAppTheme {
         MovieDetailsRoute(
             viewModel = getViewModel()
-
         )
     }
 }

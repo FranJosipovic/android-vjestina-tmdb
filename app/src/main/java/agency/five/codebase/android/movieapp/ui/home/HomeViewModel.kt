@@ -19,11 +19,11 @@ class HomeViewModel(
 ) : ViewModel() {
 
     private val popularMoviesCategorySelected: MutableStateFlow<MovieCategory> =
-        MutableStateFlow(MovieCategory.POPULAR_ONTV)
+        MutableStateFlow(MovieCategory.POPULAR_ON_TV)
     private val nowPlayingMoviesCategorySelected: MutableStateFlow<MovieCategory> =
-        MutableStateFlow(MovieCategory.NOWPLAYING_MOVIES)
+        MutableStateFlow(MovieCategory.NOW_PLAYING_MOVIES)
     private val upcomingMoviesCategorySelected: MutableStateFlow<MovieCategory> =
-        MutableStateFlow(MovieCategory.UPCOMING_THISWEEK)
+        MutableStateFlow(MovieCategory.UPCOMING_THIS_WEEK)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val popularMovies: StateFlow<HomeMovieCategoryViewState> =
@@ -35,9 +35,9 @@ class HomeViewModel(
                         homeScreenMapper.toHomeMovieCategoryViewState(
                             movieCategories = listOf(
                                 MovieCategory.POPULAR_STREAMING,
-                                MovieCategory.POPULAR_ONTV,
-                                MovieCategory.POPULAR_FORRENT,
-                                MovieCategory.POPULAR_INTHEATRES,
+                                MovieCategory.POPULAR_ON_TV,
+                                MovieCategory.POPULAR_FOR_RENT,
+                                MovieCategory.POPULAR_IN_THEATRES,
                             ),
                             selectedMovieCategory = selectedMovieCategory,
                             movies = movies,
@@ -57,8 +57,8 @@ class HomeViewModel(
                 .map { movies ->
                     homeScreenMapper.toHomeMovieCategoryViewState(
                         movieCategories = listOf(
-                            MovieCategory.NOWPLAYING_TV,
-                            MovieCategory.NOWPLAYING_MOVIES,
+                            MovieCategory.NOW_PLAYING_TV,
+                            MovieCategory.NOW_PLAYING_MOVIES,
                         ),
                         selectedMovieCategory = selectedMovieCategory,
                         movies = movies,
@@ -79,7 +79,7 @@ class HomeViewModel(
                     homeScreenMapper.toHomeMovieCategoryViewState(
                         movieCategories = listOf(
                             MovieCategory.UPCOMING_TODAY,
-                            MovieCategory.UPCOMING_THISWEEK,
+                            MovieCategory.UPCOMING_THIS_WEEK,
                         ),
                         selectedMovieCategory = selectedMovieCategory,
                         movies = movies,

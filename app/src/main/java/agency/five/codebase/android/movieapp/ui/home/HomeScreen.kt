@@ -2,33 +2,23 @@ package agency.five.codebase.android.movieapp.ui.home
 
 import HomeMovieCategoryViewState
 import HomeMovieViewState
-import agency.five.codebase.android.movieapp.mock.MoviesMock.getMoviesList
-import agency.five.codebase.android.movieapp.model.MovieCategory
 import agency.five.codebase.android.movieapp.ui.component.MovieCard
 import agency.five.codebase.android.movieapp.ui.component.MovieCardViewState
 import agency.five.codebase.android.movieapp.ui.component.MovieCategoryLabel
-import agency.five.codebase.android.movieapp.ui.component.MovieCategoryLabelViewState
-import agency.five.codebase.android.movieapp.ui.home.mapper.HomeScreenMapper
-import agency.five.codebase.android.movieapp.ui.home.mapper.HomeScreenMapperImpl
 import agency.five.codebase.android.movieapp.ui.theme.CustomHeader
-import agency.five.codebase.android.movieapp.ui.theme.MovieAppTheme
-import agency.five.codebase.android.movieapp.ui.theme.Spacing
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import agency.five.codebase.android.movieapp.ui.theme.Spacing
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -41,13 +31,6 @@ fun HomeScreenRoute(
     val nowPlayingMovies: HomeMovieCategoryViewState by viewModel.nowPlayingMovies.collectAsState()
     val upcomingMovies: HomeMovieCategoryViewState by viewModel.upcomingMovies.collectAsState()
 
-@Composable
-fun HomeScreenRoute(
-    onNavigateToMovieDetails: (HomeMovieViewState) -> Unit,
-) {
-    var popularMovies by remember { mutableStateOf(popularCategoryViewState) }
-    var nowPlayingMovies by remember { mutableStateOf(nowPlayingCategoryViewState) }
-    var upcomingMovies by remember { mutableStateOf(upcomingCategoryViewState) }
     HomeScreen(
         popularMovies,
         nowPlayingMovies,
