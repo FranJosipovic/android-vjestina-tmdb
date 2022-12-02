@@ -45,7 +45,7 @@ object MoviesMock {
         ),
     )
 
-    fun getMovieDetails(): MovieDetails = MovieDetails(
+    private fun getMovieDetails(): MovieDetails = MovieDetails(
         movie = Movie(
             id = 5,
             title = "Spider-Man: No Way Home",
@@ -72,6 +72,18 @@ object MoviesMock {
                 imageUrl = "https://image.tmdb.org/t/p/w200/bBRlrpJm9XkNSg0YT5LCaxqoFMX.jpg"
             )
         },
+    )
+
+    val fakeMovies = getMoviesList().toMutableList()
+
+    fun getMovieDetailsById(movieId: Int): MovieDetails = MovieDetails(
+        movie = fakeMovies.first { it.id == movieId },
+        voteAverage = getMovieDetails().voteAverage,
+        releaseDate = getMovieDetails().releaseDate,
+        language = getMovieDetails().language,
+        runtime = getMovieDetails().runtime,
+        crew = getMovieDetails().crew,
+        cast = getMovieDetails().cast
     )
 
     fun getCrewman(): Crewman = Crewman(

@@ -1,6 +1,5 @@
 package agency.five.codebase.android.movieapp.ui.main
 
-import agency.five.codebase.android.movieapp.mock.MoviesMock.getMoviesList
 import agency.five.codebase.android.movieapp.ui.theme.MovieAppTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity

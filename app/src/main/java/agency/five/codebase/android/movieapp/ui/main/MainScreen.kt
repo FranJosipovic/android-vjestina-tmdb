@@ -13,7 +13,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -29,6 +32,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun MainScreen() {
@@ -82,6 +87,7 @@ fun MainScreen() {
             ) {
                 composable(NavigationItem.HomeDestination.route) {
                     HomeScreenRoute(
+                        viewModel = getViewModel(),
                         onNavigateToMovieDetails = {
                             navController.navigate(
                                 MovieDetailsDestination.createNavigationRoute(it.id)
@@ -91,6 +97,7 @@ fun MainScreen() {
                 }
                 composable(NavigationItem.FavoritesDestination.route) {
                     FavoritesRoute(
+                        viewModel = getViewModel(),
                         onNavigateToMovieDetails = {
                             navController.navigate(
                                 MovieDetailsDestination.createNavigationRoute(it.id)
@@ -102,7 +109,10 @@ fun MainScreen() {
                     route = MovieDetailsDestination.route,
                     arguments = listOf(navArgument(MOVIE_ID_KEY) { type = NavType.IntType }),
                 ) {
-                    MovieDetailsRoute()
+                    val movieId = it.arguments?.getInt(MOVIE_ID_KEY)
+                    MovieDetailsRoute(
+                        viewModel = getViewModel(parameters = { parametersOf(movieId) })
+                    )
                 }
             }
         }
@@ -162,11 +172,11 @@ private fun BottomNavigationBar(
     ) {
         destinations.forEach { destination ->
             BottomNavigationItem(
-                selected = (destination.route == currentDestination?.route.toString()),
+                selected = (destination.route == currentDestination?.route),
                 onClick = { onNavigateToDestination(destination) },
                 icon = {
                     Icon(
-                        painter = if (destination.route == currentDestination?.route.toString()) {
+                        painter = if (destination.route == currentDestination?.route) {
                             painterResource(id = destination.selectedIconId)
                         } else {
                             painterResource(id = destination.unselectedIconId)

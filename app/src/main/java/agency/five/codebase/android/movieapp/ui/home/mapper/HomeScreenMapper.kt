@@ -1,6 +1,6 @@
 package agency.five.codebase.android.movieapp.ui.home.mapper
 
-import HomeMovieCategoryViewState
+import agency.five.codebase.android.movieapp.ui.home.HomeMovieCategoryViewState
 import agency.five.codebase.android.movieapp.model.Movie
 import agency.five.codebase.android.movieapp.model.MovieCategory
 

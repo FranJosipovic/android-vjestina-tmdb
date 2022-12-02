@@ -5,6 +5,8 @@ buildscript {
         compose_version = '1.2.1'
         activity_compose_version = '1.6.0'
         core_ktx_version = '1.9.0'
+        koin_version = "3.2.2"
+        koin_compose_version = "3.3.0"
     }
     repositories {
         google()
