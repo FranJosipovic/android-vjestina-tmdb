@@ -1,7 +1,7 @@
 package agency.five.codebase.android.movieapp.ui.home.mapper
 
-import HomeMovieCategoryViewState
-import HomeMovieViewState
+import agency.five.codebase.android.movieapp.ui.home.HomeMovieCategoryViewState
+import agency.five.codebase.android.movieapp.ui.home.HomeMovieViewState
 import agency.five.codebase.android.movieapp.R
 import agency.five.codebase.android.movieapp.model.Movie
 import agency.five.codebase.android.movieapp.model.MovieCategory
@@ -14,8 +14,11 @@ class HomeScreenMapperImpl : HomeScreenMapper {
         selectedMovieCategory: MovieCategory,
         movies: List<Movie>,
     ) = HomeMovieCategoryViewState(
-        movieCategories = movieCategoryLabelViewStates(movieCategories, selectedMovieCategory),
-        movies = homeMovieViewStates(movies)
+        movieCategories = movieCategoryLabelViewStates(
+            movieCategories = movieCategories,
+            selectedMovieCategory = selectedMovieCategory,
+        ),
+        movies = homeMovieViewStates(movies = movies)
     )
 
     private fun homeMovieViewStates(movies: List<Movie>) =
@@ -23,7 +26,7 @@ class HomeScreenMapperImpl : HomeScreenMapper {
             HomeMovieViewState(
                 id = movie.id,
                 isFavorite = movie.isFavorite,
-                imageUrl = movie.imageUrl
+                imageUrl = movie.imageUrl,
             )
         }
 
@@ -32,17 +35,20 @@ class HomeScreenMapperImpl : HomeScreenMapper {
         selectedMovieCategory: MovieCategory,
     ) = movieCategories.map { category ->
         MovieCategoryLabelViewState(
-            itemId = category.ordinal, isSelected = category == selectedMovieCategory,
-            categoryText = MovieCategoryLabelTextViewState.MovieCategoryStringResource(when (category) {
-                MovieCategory.POPULAR_STREAMING -> R.string.streaming
-                MovieCategory.POPULAR_ON_TV -> R.string.on_tv
-                MovieCategory.POPULAR_FOR_RENT -> R.string.for_rent
-                MovieCategory.POPULAR_IN_THEATRES -> R.string.in_theatres
-                MovieCategory.NOW_PLAYING_MOVIES -> R.string.movies
-                MovieCategory.NOW_PLAYING_TV -> R.string.tv
-                MovieCategory.UPCOMING_TODAY -> R.string.today
-                MovieCategory.UPCOMING_THIS_WEEK -> R.string.this_week
-            })
+            itemId = category.ordinal,
+            isSelected = category == selectedMovieCategory,
+            categoryText = MovieCategoryLabelTextViewState.MovieCategoryStringResource(
+                when (category) {
+                    MovieCategory.POPULAR_STREAMING -> R.string.streaming
+                    MovieCategory.POPULAR_ON_TV -> R.string.on_tv
+                    MovieCategory.POPULAR_FOR_RENT -> R.string.for_rent
+                    MovieCategory.POPULAR_IN_THEATRES -> R.string.in_theatres
+                    MovieCategory.NOW_PLAYING_MOVIES -> R.string.movies
+                    MovieCategory.NOW_PLAYING_TV -> R.string.tv
+                    MovieCategory.UPCOMING_TODAY -> R.string.today
+                    MovieCategory.UPCOMING_THIS_WEEK -> R.string.this_week
+                },
+            ),
         )
     }
 }
