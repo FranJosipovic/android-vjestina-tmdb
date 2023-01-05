@@ -1,7 +1,10 @@
 package agency.five.codebase.android.movieapp.ui.component
 
 import agency.five.codebase.android.movieapp.ui.theme.Gray600
+import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme.shapes
 import androidx.compose.material.Text
@@ -28,10 +31,11 @@ fun ActorCard(
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier,
-        elevation = 3.dp
+        modifier = modifier.height(250.dp),
+        elevation = 3.dp,
     ) {
         Column {
+            val scrollState = rememberScrollState()
             AsyncImage(
                 model = actorCardViewState.imageUrl,
                 contentDescription = "Actor",
@@ -42,19 +46,25 @@ fun ActorCard(
                     .padding(4.dp)
                     .clip(shapes.small)
             )
-            Text(
-                text = actorCardViewState.name,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                modifier = Modifier.padding(4.dp),
-                color = Color.Black
-            )
-            Text(
-                text = actorCardViewState.character,
-                fontSize = 16.sp,
-                modifier = Modifier.padding(4.dp),
-                color = Gray600
-            )
+            Box(
+                modifier = Modifier.verticalScroll(scrollState)
+            ) {
+                Column {
+                    Text(
+                        text = actorCardViewState.name,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = Color.Black
+                    )
+                    Text(
+                        text = actorCardViewState.character,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = Gray600
+                    )
+                }
+            }
         }
     }
 }

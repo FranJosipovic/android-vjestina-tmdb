@@ -46,7 +46,7 @@ fun UserScoreProgressBar(
             )
         }
         Text(
-            text = rating.toString(),
+            text = String.format("%.1f", rating),
             color = Color.White,
             fontSize = 15.sp,
             modifier = Modifier

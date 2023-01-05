@@ -101,17 +101,13 @@ private fun CrewGrid(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
-        modifier = Modifier.height(((movieDetailsViewState.crew.size / 3) * 100).dp),
-        userScrollEnabled = false,
+        modifier = Modifier.height(300.dp),
         contentPadding = PaddingValues(Spacing().normal),
         verticalArrangement = Arrangement.spacedBy(spacing.large),
         horizontalArrangement = Arrangement.spacedBy(spacing.medium),
     ) {
         items(
             items = movieDetailsViewState.crew,
-            key = { item ->
-                item.id
-            },
             itemContent = { item ->
 
                 CrewItem(crewItemViewState = CrewItemViewState(item.name, item.job))
@@ -143,7 +139,7 @@ private fun Poster(
         AsyncImage(
             model = movieDetailsViewState.imageUrl,
             contentDescription = "Poster",
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(400.dp)
@@ -160,7 +156,7 @@ private fun Poster(
                 modifier = Modifier.padding(vertical = spacing.small),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                UserScoreProgressBar(rating = movieDetailsViewState.voteAverage)
+                UserScoreProgressBar(rating = movieDetailsViewState.voteAverage.toFloat())
                 Text(
                     text = "user score",
                     modifier = Modifier.padding(horizontal = spacing.small),

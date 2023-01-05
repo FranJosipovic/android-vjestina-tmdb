@@ -17,7 +17,7 @@ data class ActorViewState(
 data class MovieDetailsViewState(
     val id: Int,
     val imageUrl: String,
-    val voteAverage: Float,
+    val voteAverage: Double,
     val title: String,
     val overview: String,
     val isFavorite: Boolean,
